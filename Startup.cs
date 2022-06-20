@@ -1,15 +1,11 @@
+using Confluent.Kafka;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using RSMessageProcessor;
 
 namespace CameraAPI
 {
@@ -43,6 +39,10 @@ namespace CameraAPI
                 });
             });
 
+            services.AddKafkaProducer(new ProducerConfig(new ClientConfig
+            {
+                BootstrapServers = Configuration["Kafka:ClientConfigs:BootstrapServers"]
+            }));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
