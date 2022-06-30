@@ -1,3 +1,5 @@
+using CameraAPI.Services;
+using CameraAPI.Services.Interface;
 using Confluent.Kafka;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -43,6 +45,7 @@ namespace CameraAPI
             {
                 BootstrapServers = Configuration["Kafka:ClientConfigs:BootstrapServers"]
             }));
+            services.AddTransient<IFileUploadService, FileUploadService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
