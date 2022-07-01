@@ -1,6 +1,5 @@
 using CameraAPI.Services;
 using CameraAPI.Services.Interface;
-using Confluent.Kafka;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -41,10 +40,9 @@ namespace CameraAPI
                 });
             });
 
-            services.AddKafkaProducer(new ProducerConfig(new ClientConfig
-            {
-                BootstrapServers = Configuration["Kafka:ClientConfigs:BootstrapServers"]
-            }));
+            var rabbitConfig = Configuration.GetSection("Rabbit");
+
+            services.AddRabbitProducer(rabbitConfig);
             services.AddTransient<IFileUploadService, FileUploadService>();
         }
 
