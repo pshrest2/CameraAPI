@@ -36,7 +36,7 @@ namespace CameraAPI
                     .AllowAnyMethod()
                     .AllowAnyHeader()
                     .AllowCredentials()
-                    .WithOrigins("http://localhost:3000", "http://localhost:3001", "https://receiptuploader.z13.web.core.windows.net/");
+                    .WithOrigins("http://localhost:3000", "http://localhost:3001", "https://receiptuploader.z13.web.core.windows.net"); 
                 });
             });
 
