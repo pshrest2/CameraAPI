@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CameraAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/camera")]
     [ApiController]
     public class CameraController : ControllerBase
     {
@@ -20,7 +20,7 @@ namespace CameraAPI.Controllers
             _fileUploadService = fileUploadService;
         }
         [HttpPost]
-        [Route("register")]
+        [Route("upload")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<IActionResult> Upload(IFormFile imageFile)
         {
@@ -28,15 +28,14 @@ namespace CameraAPI.Controllers
             {
                 // Upload file to blob
                 var uri = await _fileUploadService.UploadFileToStorage(imageFile);
-                //var uri = "https://receiptimages.blob.core.windows.net/receipt-images/IMG_8972.JPG?sv=2021-06-08&se=2022-06-26T23%3A10%3A45Z&sr=b&sp=r&sig=3TmijsQp5l9BN2ntWoLvc4wRPDsTprzzs7i%2FuKj8mek%3D";
 
                 // Send rabbit message with blob uri to the form recognizer service
                 await _rabbitProducer.ProduceMessage("ReceiptImage", uri);
                 return Ok();
             }
-            catch(Exception)
+            catch(Exception e) 
             {
-                return Problem("Could not upload the image");
+                return Problem($"Could not upload the image: {e}");
             }
         }
     }
